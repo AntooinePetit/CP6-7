@@ -31,3 +31,17 @@ function verifyExistingUsername($usernameUser){
   $existingUsers = $stmt->rowCount();
   return $existingUsers;
 }
+
+// Fonction de connexion
+function connectUser($email, $password){
+  include 'db.php';
+  $stmt = $pdo->prepare('SELECT id, password_hash FROM users WHERE email = :email');
+  $stmt->execute(["email" => $email]);
+  $user = $stmt->fetch();
+
+  if(password_verify($password, $user['password_hash'])){
+    return $user['id'];
+  } else {
+    return false;
+  }
+}

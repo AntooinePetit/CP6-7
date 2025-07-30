@@ -65,19 +65,21 @@ if(!empty($_POST['submit'])){
       <h1>Créer un compte</h1>
       <form action="" method="post">
         <label for="username">Nom d'utilisateur</label>
-        <input type="text" name="username" id="username">
+        <input type="text" name="username" id="username" required>
         <label for="email">Email</label>
-        <input type="email" name="email" id="email">
+        <input type="email" name="email" id="email" required>
         <label for="password">Mot de passe</label>
-        <input type="password" name="password" id="password">
+        <input type="password" name="password" id="password" required>
         <input type="submit" name="submit" value="Créer un compte">
         <?= $error ?>
       </form>
     <?php endif; 
     // Si utilisateur déjà connecté
     if(!empty($_SESSION['connected']) && $_SESSION['connected'] === true): ?>
-      <h1>Vous êtes connecté !</h1>
-      <a href="../index.php">Revenir à l'accueil</a>
+      <div style="text-align:center">
+        <h1>Vous êtes connecté !</h1>
+        <a href="../index.php">Revenir à l'accueil</a>
+      </div>
     <?php endif; ?>
   </main>
 
