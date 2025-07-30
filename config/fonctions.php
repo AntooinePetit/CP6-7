@@ -15,19 +15,25 @@ function createAccount($usernameUser, $email, $password){
 }
 
 // Vérification de l'existence du mail
-function verifyExistingEmail($email){
+function verifyExistingEmail($email, $id = 0){
   include 'db.php';
-  $stmt = $pdo->prepare('SELECT id FROM users WHERE email = :email');
-  $stmt->execute(["email" => $email]);
+  $stmt = $pdo->prepare('SELECT id FROM users WHERE email = :email AND id != :id');
+  $stmt->execute([
+    "email" => $email,
+    "id" => $id
+  ]);
   $existingUsers = $stmt->rowCount();
   return $existingUsers;
 }
 
 // Vérification de l'existence du nom d'utilisateur
-function verifyExistingUsername($usernameUser){
+function verifyExistingUsername($usernameUser, $id = 0){
   include 'db.php';
-  $stmt = $pdo->prepare('SELECT id FROM users WHERE username = :username');
-  $stmt->execute(["username" => $usernameUser]);
+  $stmt = $pdo->prepare('SELECT id FROM users WHERE username = :username AND id != :id');
+  $stmt->execute([
+    "username" => $usernameUser,
+    "id" => $id
+  ]);
   $existingUsers = $stmt->rowCount();
   return $existingUsers;
 }
@@ -44,4 +50,49 @@ function connectUser($email, $password){
   } else {
     return false;
   }
+}
+
+// Fonction pour récupérer les informations d'un utilisateur
+function getUser($id){
+  include 'db.php';
+  $stmt = $pdo->prepare('SELECT username, email FROM users WHERE id = :id');
+  $stmt->execute(["id" => $id]);
+  return $stmt->fetch();
+}
+
+// Fonction pour mettre à jour le pseudo utilisateur
+function updateUsername($id, $newUsername){
+  include 'db.php';
+  $stmt = $pdo->prepare('UPDATE users SET username = :username WHERE id = :id');
+  $stmt->execute([
+    "username" => $newUsername,
+    "id" => $id
+  ]);
+
+  return $stmt->rowCount();
+}
+
+// Fonction pour mettre à jour l'email utilisateur
+function updateEmail($id, $newEmail){
+  include 'db.php';
+  $stmt = $pdo->prepare('UPDATE users SET email = :email WHERE id = :id');
+  $stmt->execute([
+    "email" => $newEmail,
+    "id" => $id
+  ]);
+
+  return $stmt->rowCount();
+}
+
+// Fonction pour mettre à jour le mot de passe utilisateur
+function updatePassword($id, $newPassword){
+  $passwordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+  include 'db.php';
+  $stmt = $pdo->prepare('UPDATE users SET password_hash = :pass WHERE id = :id');
+  $stmt->execute([
+    "pass" =>  $passwordHash,
+    "id" => $id
+  ]);
+
+  return $stmt->rowCount();
 }

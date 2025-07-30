@@ -58,7 +58,7 @@ if(!empty($_POST['submit'])){
         <input type="email" name="email" id="email" required>
         <label for="password">Mot de passe</label>
         <input type="password" name="password" id="password" required>
-        <input type="submit" name="submit" value="Créer un compte">
+        <input type="submit" name="submit" value="Se connecter">
         <?= $error ?>
       </form>
     <?php endif; 
