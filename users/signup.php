@@ -7,8 +7,8 @@ if(!empty($_POST['submit'])){
   // Vérification que les champs sont tous remplis
   if(!empty($_POST['username']) && !empty($_POST['email']) && !empty($_POST['password'])){
     require_once '../config/fonctions.php';
-    $username = $_POST['username'];
-    $email = $_POST['email'];
+    $username = htmlspecialchars(trim($_POST['username']));
+    $email = htmlspecialchars(trim($_POST['email']));
     // Vérification que l'adresse mail est valide
     if(filter_var($email, FILTER_VALIDATE_EMAIL)){
       // Vérification de l'existence du compte
@@ -33,7 +33,19 @@ if(!empty($_POST['submit'])){
     $error = '<p style="color:red;">Tous les champs doivent être remplis !</p>';
   }
 
-  
+  if($isError === false){
+    $username = htmlspecialchars(trim($_POST['username']));
+    $email = htmlspecialchars(trim($_POST['email']));
+    $password = trim($_POST['password']);
+    
+    $accountCreated = createAccount($username, $email, $password);
+    if($accountCreated >= 1){
+      $error = '<p style="color:green">Votre compte a bien été créé</p>
+      <a href="/cp6-7/users/login.php">Vous connecter à votre compte</a>';
+    } else {
+      $error = '<p style="color:red;">Une erreur est survenue lors de la création de votre compte</p>';
+    }
+  }
 }
 ?>
 <!DOCTYPE html>
