@@ -1,12 +1,12 @@
 <?php
 
 // Création de compte 
-function createAccount($username, $email, $password){
-  include_once 'db.php';
+function createAccount($usernameUser, $email, $password){
+  include 'db.php';
   $passwordHash = password_hash($password, PASSWORD_DEFAULT);
   $stmt = $pdo->prepare('INSERT INTO users (username, email, password_hash) VALUES (:username, :email, :password);');
   $stmt->execute([
-    "username" => $username,
+    "username" => $usernameUser,
     "email" => $email,
     "password" => $passwordHash
   ]);
@@ -14,14 +14,20 @@ function createAccount($username, $email, $password){
   return $stmt->rowCount();
 }
 
-// Vérification de l'existence du compte
-function verifyExistingAccount($username, $email){
-  include_once 'db.php';
-  $stmt = $pdo->prepare('SELECT * FROM users WHERE email = :email OR username = :username');
-  $stmt->execute([
-    "email" => $email,
-    "username" => $username
-  ]);
-  $existingUsers = $stmt->fetchAll();
-  return $existingUsers != [] ? 'true' : 'false';
+// Vérification de l'existence du mail
+function verifyExistingEmail($email){
+  include 'db.php';
+  $stmt = $pdo->prepare('SELECT id FROM users WHERE email = :email');
+  $stmt->execute(["email" => $email]);
+  $existingUsers = $stmt->rowCount();
+  return $existingUsers;
+}
+
+// Vérification de l'existence du nom d'utilisateur
+function verifyExistingUsername($usernameUser){
+  include 'db.php';
+  $stmt = $pdo->prepare('SELECT id FROM users WHERE username = :username');
+  $stmt->execute(["username" => $usernameUser]);
+  $existingUsers = $stmt->rowCount();
+  return $existingUsers;
 }

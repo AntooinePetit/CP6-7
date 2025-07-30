@@ -1,8 +1,39 @@
 <?php
 session_start();
 $error = '';
+$isError = false;
+// Vérification que le formulaire a été envoyé
 if(!empty($_POST['submit'])){
-  $error = 'Submit detected';
+  // Vérification que les champs sont tous remplis
+  if(!empty($_POST['username']) && !empty($_POST['email']) && !empty($_POST['password'])){
+    require_once '../config/fonctions.php';
+    $username = $_POST['username'];
+    $email = $_POST['email'];
+    // Vérification que l'adresse mail est valide
+    if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+      // Vérification de l'existence du compte
+      if(verifyExistingEmail( $email) || verifyExistingUsername($username)){
+        $isError = true;
+        $errorEmail = '';
+        $errorUsername = '';
+        if(verifyExistingEmail($email)){
+          $errorEmail = 'L\'email est déjà pris. ';
+        }
+        if(verifyExistingUsername($username)){
+          $errorUsername = 'Le nom d\'utilisateur est déjà pris.';
+        }
+        $error = '<p style="color:red;">'.$errorEmail.$errorUsername.'</p>';
+      }
+    } else {
+      $isError = true;
+      $error = '<p style="color:red;">Cette adresse email est invalide !</p>';
+    }
+  } else {
+    $isError = true;
+    $error = '<p style="color:red;">Tous les champs doivent être remplis !</p>';
+  }
+
+  
 }
 ?>
 <!DOCTYPE html>
