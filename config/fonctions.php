@@ -154,3 +154,33 @@ function addPlayerToTeam($idTeam, $idUser, $role = 'member'){
 
   return $stmt->rowCount();
 }
+
+// Fonction pour récupérer les informations d'une équipe
+function getTeamInfo($idTeam){
+  include 'db.php';
+  $stmt = $pdo->prepare('SELECT name, created_at FROM teams WHERE id = :id');
+  $stmt->execute(["id" => $idTeam]);
+
+  return $stmt->fetch();
+}
+
+// Fonction pour récupérer tous les joueurs d'une équipe
+function getAllPlayersFromTeam($idTeam){
+  include 'db.php';
+  $stmt = $pdo->prepare('SELECT u.id, u.username, tm.role_in_team FROM team_members as tm INNER JOIN users as u ON tm.user_id = u.id WHERE tm.team_id = :id ORDER BY tm.role_in_team DESC');
+  $stmt->execute(["id" => $idTeam]);
+
+  return $stmt->fetchAll();
+}
+
+// Fonction pour vérifier la présence d'un joueur dans une équipe
+function verifyPlayerInTeam($idTeam, $idUser){
+  include 'db.php';
+  $stmt = $pdo->prepare('SELECT role_in_team FROM team_members WHERE user_id = :user_id AND team_id = :team_id');
+  $stmt->execute([
+    "user_id" => $idUser,
+    "team_id" => $idTeam
+  ]);
+
+  return $stmt->fetch();
+}
