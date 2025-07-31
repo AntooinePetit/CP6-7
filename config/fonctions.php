@@ -114,11 +114,20 @@ function getAllTeams()
   return $stmt->fetchAll();
 }
 
-// Fonction pour vérifier l'existence d'une équipe
+// Fonction pour vérifier l'existence d'une équipe grâce au nom
 function verifyExistingTeam($teamName){
   include 'db.php';
   $stmt = $pdo->prepare('SELECT * FROM teams WHERE name = :name');
   $stmt->execute(["name" => $teamName]);
+
+  return $stmt->rowCount();
+}
+
+// Fonction pour vérifier l'existence d'une équipe grâce à l'id
+function verifyExistingTeamById($idTeam){
+  include 'db.php';
+  $stmt = $pdo->prepare('SELECT * FROM teams WHERE id = :id');
+  $stmt->execute(["id" => $idTeam]);
 
   return $stmt->rowCount();
 }
@@ -183,4 +192,16 @@ function verifyPlayerInTeam($idTeam, $idUser){
   ]);
 
   return $stmt->fetch();
+}
+
+// Fonction pour exclure un joueur d'une équipe
+function kickPlayer($idTeam, $idPlayer){
+  include 'db.php';
+  $stmt = $pdo->prepare('DELETE FROM team_members WHERE user_id = :user_id AND team_id = :team_id');
+  $stmt->execute([
+    "user_id" => $idPlayer,
+    "team_id" => $idTeam
+  ]);
+
+  return $stmt->rowCount();
 }
