@@ -214,3 +214,28 @@ function getAllActiveTournaments(){
 
   return $stmt->fetchAll();
 }
+
+// Fonction pour vérifier l'existence d'un tournoi actif grâce au nom
+function verifyExistingTournamentByName($name){
+  include 'db.php';
+  $stmt = $pdo->prepare('SELECT * FROM tournaments WHERE name = :name AND start_date >= CURRENT_TIMESTAMP');
+  $stmt->execute(["name" => $name]);
+
+  return $stmt->fetch();
+}
+
+// Fonction de création de tournoi
+function createTournament($name, $game, $description, $start, $end, $userId){
+  include 'db.php';
+  $stmt = $pdo->prepare('INSERT INTO tournaments(name, game, description, start_date, end_date, organizer_id) VALUES (:tournament_name , :game , :tournament_description , :starting , :ending , :id)');
+  $stmt->execute([
+    "tournament_name" => $name,
+    "game" => $game,
+    "tournament_description" => $description,
+    "starting" => $start,
+    "ending" => $end,
+    "id" => $userId
+  ]);
+
+  return $stmt->rowCount();
+}
