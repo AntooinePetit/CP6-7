@@ -1,7 +1,8 @@
 <?php
 
 // Création de compte 
-function createAccount($usernameUser, $email, $password){
+function createAccount($usernameUser, $email, $password)
+{
   include 'db.php';
   $passwordHash = password_hash($password, PASSWORD_DEFAULT);
   $stmt = $pdo->prepare('INSERT INTO users (username, email, password_hash) VALUES (:username, :email, :password);');
@@ -15,7 +16,8 @@ function createAccount($usernameUser, $email, $password){
 }
 
 // Vérification de l'existence du mail
-function verifyExistingEmail($email, $id = 0){
+function verifyExistingEmail($email, $id = 0)
+{
   include 'db.php';
   $stmt = $pdo->prepare('SELECT id FROM users WHERE email = :email AND id != :id');
   $stmt->execute([
@@ -27,7 +29,8 @@ function verifyExistingEmail($email, $id = 0){
 }
 
 // Vérification de l'existence du nom d'utilisateur
-function verifyExistingUsername($usernameUser, $id = 0){
+function verifyExistingUsername($usernameUser, $id = 0)
+{
   include 'db.php';
   $stmt = $pdo->prepare('SELECT id FROM users WHERE username = :username AND id != :id');
   $stmt->execute([
@@ -39,13 +42,14 @@ function verifyExistingUsername($usernameUser, $id = 0){
 }
 
 // Fonction de connexion
-function connectUser($email, $password){
+function connectUser($email, $password)
+{
   include 'db.php';
   $stmt = $pdo->prepare('SELECT id, password_hash FROM users WHERE email = :email');
   $stmt->execute(["email" => $email]);
   $user = $stmt->fetch();
 
-  if(password_verify($password, $user['password_hash'])){
+  if (password_verify($password, $user['password_hash'])) {
     return $user['id'];
   } else {
     return false;
@@ -53,7 +57,8 @@ function connectUser($email, $password){
 }
 
 // Fonction pour récupérer les informations d'un utilisateur
-function getUser($id){
+function getUser($id)
+{
   include 'db.php';
   $stmt = $pdo->prepare('SELECT username, email FROM users WHERE id = :id');
   $stmt->execute(["id" => $id]);
@@ -61,7 +66,8 @@ function getUser($id){
 }
 
 // Fonction pour mettre à jour le pseudo utilisateur
-function updateUsername($id, $newUsername){
+function updateUsername($id, $newUsername)
+{
   include 'db.php';
   $stmt = $pdo->prepare('UPDATE users SET username = :username WHERE id = :id');
   $stmt->execute([
@@ -73,7 +79,8 @@ function updateUsername($id, $newUsername){
 }
 
 // Fonction pour mettre à jour l'email utilisateur
-function updateEmail($id, $newEmail){
+function updateEmail($id, $newEmail)
+{
   include 'db.php';
   $stmt = $pdo->prepare('UPDATE users SET email = :email WHERE id = :id');
   $stmt->execute([
@@ -85,7 +92,8 @@ function updateEmail($id, $newEmail){
 }
 
 // Fonction pour mettre à jour le mot de passe utilisateur
-function updatePassword($id, $newPassword){
+function updatePassword($id, $newPassword)
+{
   $passwordHash = password_hash($newPassword, PASSWORD_DEFAULT);
   include 'db.php';
   $stmt = $pdo->prepare('UPDATE users SET password_hash = :pass WHERE id = :id');
@@ -95,4 +103,13 @@ function updatePassword($id, $newPassword){
   ]);
 
   return $stmt->rowCount();
+}
+
+// Fonction pour récupérer toutes les équipes créées
+function getAllTeams()
+{
+  include 'db.php';
+  $stmt = $pdo->prepare('SELECT name FROM teams');
+  $stmt->execute();
+  return $stmt->fetchAll();
 }

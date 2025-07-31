@@ -3,26 +3,26 @@ session_start();
 $error = '';
 $isError = false;
 // Vérification que le formulaire a été envoyé
-if(!empty($_POST['submit'])){
+if (!empty($_POST['submit'])) {
   // Vérification que les champs sont tous remplis
-  if(!empty($_POST['username']) && !empty($_POST['email']) && !empty($_POST['password'])){
+  if (!empty($_POST['username']) && !empty($_POST['email']) && !empty($_POST['password'])) {
     require_once '../config/fonctions.php';
     $username = htmlspecialchars(trim($_POST['username']));
     $email = htmlspecialchars(trim($_POST['email']));
     // Vérification que l'adresse mail est valide
-    if(filter_var($email, FILTER_VALIDATE_EMAIL)){
+    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
       // Vérification de l'existence du compte
-      if(verifyExistingEmail( $email) || verifyExistingUsername($username)){
+      if (verifyExistingEmail($email) || verifyExistingUsername($username)) {
         $isError = true;
         $errorEmail = '';
         $errorUsername = '';
-        if(verifyExistingEmail($email)){
+        if (verifyExistingEmail($email)) {
           $errorEmail = 'L\'email est déjà pris. ';
         }
-        if(verifyExistingUsername($username)){
+        if (verifyExistingUsername($username)) {
           $errorUsername = 'Le nom d\'utilisateur est déjà pris.';
         }
-        $error = '<p style="color:red;">'.$errorEmail.$errorUsername.'</p>';
+        $error = '<p style="color:red;">' . $errorEmail . $errorUsername . '</p>';
       }
     } else {
       $isError = true;
@@ -33,13 +33,13 @@ if(!empty($_POST['submit'])){
     $error = '<p style="color:red;">Tous les champs doivent être remplis !</p>';
   }
 
-  if($isError === false){
+  if ($isError === false) {
     $username = htmlspecialchars(trim($_POST['username']));
     $email = htmlspecialchars(trim($_POST['email']));
     $password = trim($_POST['password']);
-    
+
     $accountCreated = createAccount($username, $email, $password);
-    if($accountCreated >= 1){
+    if ($accountCreated >= 1) {
       $error = '<p style="color:green">Votre compte a bien été créé</p>
       <a href="/cp6-7/users/login.php">Vous connecter à votre compte</a>';
     } else {
@@ -50,18 +50,20 @@ if(!empty($_POST['submit'])){
 ?>
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Créer un compte</title>
   <link rel="stylesheet" href="../style/style.css">
 </head>
+
 <body>
   <?php include_once '../components/header.php'; ?>
 
   <main>
     <!-- Si utilisateur pas encore connecté -->
-    <?php if(empty($_SESSION['connected'])): ?>
+    <?php if (empty($_SESSION['connected'])): ?>
       <h1>Créer un compte</h1>
       <form action="" method="post">
         <label for="username">Nom d'utilisateur</label>
@@ -73,9 +75,9 @@ if(!empty($_POST['submit'])){
         <input type="submit" name="submit" value="Créer un compte">
         <?= $error ?>
       </form>
-    <?php endif; 
+    <?php endif;
     // Si utilisateur déjà connecté
-    if(!empty($_SESSION['connected']) && $_SESSION['connected'] === true): ?>
+    if (!empty($_SESSION['connected']) && $_SESSION['connected'] === true): ?>
       <div style="text-align:center">
         <h1>Vous êtes connecté !</h1>
         <a href="../index.php">Revenir à l'accueil</a>
@@ -85,4 +87,5 @@ if(!empty($_POST['submit'])){
 
   <?php include_once '../components/footer.php'; ?>
 </body>
+
 </html>

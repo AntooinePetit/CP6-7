@@ -68,3 +68,62 @@ form {
     padding: 5px;
   }
 }
+
+/* Tableaux */
+
+.table_component {
+  margin: auto;
+  overflow: auto;
+  max-width: 1440px;
+  padding: 15px;
+
+  .ajout {
+    padding: 10px 20px;
+    border: 1px solid black;
+    width: fit-content;
+    display: block;
+    margin-top: 10px;
+
+    &:hover {
+      background: black;
+      color: white;
+    }
+  }
+}
+
+.table_component table {
+  border: 1px solid #dededf;
+  height: 100%;
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  border-spacing: 1px;
+  text-align: left;
+}
+
+.table_component caption {
+  caption-side: top;
+  text-align: left;
+}
+
+.table_component th {
+  border: 1px solid #dededf;
+  background-color: #eceff1;
+  color: #000000;
+  padding: 5px;
+}
+
+.table_component td {
+  border: 1px solid #dededf;
+  background-color: #ffffff;
+  color: #000000;
+  padding: 5px;
+
+  .edit {
+    color: blue;
+  }
+
+  .del {
+    color: red;
+  }
+}
