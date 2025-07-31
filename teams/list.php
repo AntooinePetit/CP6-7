@@ -17,7 +17,7 @@ session_start();
 
   <main>
     <h1>Liste des équipes</h1>
-    <div class="table_component" role="region" tabindex="0">
+    <div class="table_component" tabindex="0">
       <table>
         <thead>
           <tr>

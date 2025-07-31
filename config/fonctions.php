@@ -113,3 +113,44 @@ function getAllTeams()
   $stmt->execute();
   return $stmt->fetchAll();
 }
+
+// Fonction pour vérifier l'existence d'une équipe
+function verifyExistingTeam($teamName){
+  include 'db.php';
+  $stmt = $pdo->prepare('SELECT * FROM teams WHERE name = :name');
+  $stmt->execute(["name" => $teamName]);
+
+  return $stmt->rowCount();
+}
+
+// Fonction pour créer une équipe et y ajouter le créateur en tant que capitaine
+function createTeam($teamName, $idUser){
+  include 'db.php';
+  $stmt = $pdo->prepare('INSERT INTO teams (name) VALUES (:name)');
+  $stmt->execute(["name" => $teamName]);
+
+  if($stmt->rowCount() > 0){
+    $stmt2 = $pdo->prepare('SELECT id FROM teams WHERE name = :name');
+    $stmt2->execute(["name" => $teamName]);
+    $team = $stmt2->fetch();
+    
+    if(isset($team['id'])){
+      addPlayerToTeam($team['id'], $idUser, 'captain');
+    }
+  }
+
+  return $stmt->rowCount();
+}
+
+// Fonction pour ajouter un joueur à une équipe
+function addPlayerToTeam($idTeam, $idUser, $role = 'member'){
+  include 'db.php';
+  $stmt = $pdo->prepare('INSERT INTO team_members (user_id, team_id, role_in_team) VALUES (:user, :team, :role)');
+  $stmt->execute([
+    "user" => $idUser,
+    "team" => $idTeam,
+    "role" => $role
+  ]);
+
+  return $stmt->rowCount();
+}
