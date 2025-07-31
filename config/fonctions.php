@@ -109,7 +109,7 @@ function updatePassword($id, $newPassword)
 function getAllTeams()
 {
   include 'db.php';
-  $stmt = $pdo->prepare('SELECT name FROM teams');
+  $stmt = $pdo->prepare('SELECT id, name FROM teams');
   $stmt->execute();
   return $stmt->fetchAll();
 }

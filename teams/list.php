@@ -33,7 +33,11 @@ session_start();
           ?>
             <tr>
               <td><?= $team['name'] ?></td>
-              <td><a href="#">Voir l'équipe</a></td>
+              <td>
+                <a href="#">Voir l'équipe</a>
+                |
+                <a href="join.php?id=<?= $team['id'] ?>">Rejoindre l'équipe</a>
+              </td>
             </tr>
           <?php endforeach; ?>
         </tbody>

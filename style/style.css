@@ -25,6 +25,10 @@ main {
   margin: auto;
 }
 
+.info {
+  text-align: center;
+}
+
 /* Header */
 
 header {
