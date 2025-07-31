@@ -35,14 +35,18 @@ session_start();
               <td><?= $team['name'] ?></td>
               <td>
                 <a href="team.php?id=<?= $team['id'] ?>">Voir l'équipe</a>
-                |
-                <a href="join.php?id=<?= $team['id'] ?>">Rejoindre l'équipe</a>
+                <?php if(!empty($_SESSION['id_user']) && verifyPlayerInTeam($team['id'], $_SESSION['id_user']) === false): ?>
+                  |
+                  <a href="join.php?id=<?= $team['id'] ?>">Rejoindre l'équipe</a>
+                <?php endif; ?>
               </td>
             </tr>
           <?php endforeach; ?>
         </tbody>
       </table>
-      <a href="create.php" class="ajout">Créer mon équipe</a>
+      <?php if(!empty($_SESSION['connected']) && $_SESSION['connected'] === true): ?>
+        <a href="create.php" class="ajout">Créer mon équipe</a>
+      <?php endif; ?>
     </div>
   </main>
 

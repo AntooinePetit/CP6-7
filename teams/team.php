@@ -41,7 +41,7 @@ if (!empty($_GET['id'])) {
           <tr>
             <th>Pseudo du joueur</th>
             <th>Rôle</th>
-            <?php if($userInTeam['role_in_team'] === 'captain'): ?>
+            <?php if(isset($userInTeam) && $userInTeam != false && $userInTeam['role_in_team'] === 'captain'): ?>
               <th>Actions</th>
             <?php endif; ?>
           </tr>
@@ -51,14 +51,14 @@ if (!empty($_GET['id'])) {
             <tr>
               <td><?= $player['username'] ?></td>
               <td><?= $player['role_in_team'] ?></td>
-              <?php if($userInTeam['role_in_team'] === 'captain' && $player['role_in_team'] != 'captain'): ?>
+              <?php if(isset($userInTeam) && $userInTeam['role_in_team'] === 'captain' && $player['role_in_team'] != 'captain'): ?>
                 <td><a href="delete.php?id=<?= $player['id'] ?>">Exclure</a></td>
               <?php endif; ?>
             </tr>
           <?php endforeach; ?>
         </tbody>
       </table>
-      <?php if($userInTeam === false): ?>
+      <?php if(isset($userInTeam) && $userInTeam === false): ?>
         <a href="join.php?id=<?= $idTeam ?>" class="ajout">Rejoindre cette équipe</a>
       <?php endif; ?>
     </div>
