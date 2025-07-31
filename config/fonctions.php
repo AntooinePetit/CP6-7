@@ -60,7 +60,7 @@ function connectUser($email, $password)
 function getUser($id)
 {
   include 'db.php';
-  $stmt = $pdo->prepare('SELECT username, email FROM users WHERE id = :id');
+  $stmt = $pdo->prepare('SELECT username, email, role FROM users WHERE id = :id');
   $stmt->execute(["id" => $id]);
   return $stmt->fetch();
 }
@@ -204,4 +204,13 @@ function kickPlayer($idTeam, $idPlayer){
   ]);
 
   return $stmt->rowCount();
+}
+
+// Fonction pour récupérer tous les tournois actifs
+function getAllActiveTournaments(){
+  include 'db.php';
+  $stmt = $pdo->prepare('SELECT * FROM tournaments WHERE start_date >= CURRENT_TIMESTAMP;');
+  $stmt->execute();
+
+  return $stmt->fetchAll();
 }
