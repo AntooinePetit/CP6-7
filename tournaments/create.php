@@ -65,7 +65,7 @@ if (!empty($_POST['submit'])) {
   <?php include_once '../components/header.php'; ?>
 
   <main>
-    <h1>Créer une tournoi</h1>
+    <h1>Créer un tournoi</h1>
     <!-- Si utilisateur est connecté -->
     <?php if (!empty($_SESSION['connected']) && $_SESSION['connected'] === true): 
     // Si l'utilisateur a bien les droits d'organisateur ou plus
@@ -83,7 +83,7 @@ if (!empty($_POST['submit'])) {
           <label for="ending-date">Date de fin</label>
           <input type="date" name="ending-date" id="ending-date" required>
           <?= $errorDate ?>
-          <input type="submit" name="submit" value="Créer une équipe">
+          <input type="submit" name="submit" value="Créer un tournoi">
           <?= $error ?>
         </form>
       <!-- Si l'utilisateur n'a pas les droits nécessaire -->

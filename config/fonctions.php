@@ -216,10 +216,13 @@ function getAllActiveTournaments(){
 }
 
 // Fonction pour vérifier l'existence d'un tournoi actif grâce au nom
-function verifyExistingTournamentByName($name){
+function verifyExistingTournamentByName($name, $id = 0){
   include 'db.php';
-  $stmt = $pdo->prepare('SELECT * FROM tournaments WHERE name = :name AND start_date >= CURRENT_TIMESTAMP');
-  $stmt->execute(["name" => $name]);
+  $stmt = $pdo->prepare('SELECT * FROM tournaments WHERE name = :name AND start_date >= CURRENT_TIMESTAMP AND id != :id');
+  $stmt->execute([
+    "name" => $name,
+    "id" => $id
+  ]);
 
   return $stmt->fetch();
 }
@@ -238,4 +241,13 @@ function createTournament($name, $game, $description, $start, $end, $userId){
   ]);
 
   return $stmt->rowCount();
+}
+
+// Fonction pour récupérer les données d'un tournoi spécifique
+function getTournamentById($id){
+  include 'db.php';
+  $stmt = $pdo->prepare('SELECT name, game, description, start_date, end_date, organizer_id FROM tournaments WHERE id = :id');
+  $stmt->execute(["id" => $id]);
+
+  return $stmt->fetch();
 }
