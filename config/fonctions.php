@@ -286,8 +286,8 @@ function getTeamsWhereCaptain($idUser){
   return $stmt->fetchAll();
 }
 
-// Fonction pour récupérer les équipes inscrites à un tournoi
-function getTeamInTournament($idTeam, $idTournament){
+// Fonction pour vérifier si une équipe est inscrite à un tournoi
+function verifyTeamInTournament($idTeam, $idTournament){
   require 'db.php';
   $stmt = $pdo->prepare('SELECT id from registrations WHERE team_id = :team_id AND tournament_id = :tournament_id');
   $stmt->execute([

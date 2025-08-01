@@ -14,7 +14,7 @@ if(!empty($_POST['submit'])){
     // Si l'utilisateur est bien le capitaine
     if($userRole['role_in_team'] === 'captain'){
       // Si l'équipe n'est pas déjà inscrite
-      if(count(getTeamInTournament($_POST['team'], $_GET['id'])) <= 0){
+      if(count(verifyTeamInTournament($_POST['team'], $_GET['id'])) <= 0){
         $isRegistered = registerTeamInTournament($_POST['team'], $_GET['id']);
         if($isRegistered > 0) {
           $error = '<p style="color:green;">Votre équipe a bien été inscrite à ce tournoi</p>';
