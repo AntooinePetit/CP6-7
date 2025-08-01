@@ -276,3 +276,36 @@ function deleteTournament($id){
 
   return $stmt->rowCount();
 }
+
+// Fonction pour récupérer les équipes dont le joueur fait partie et dont il est le capitaine
+function getTeamsWhereCaptain($idUser){
+  require 'db.php';
+  $stmt = $pdo->prepare('SELECT t.id, t.name FROM team_members as tm INNER JOIN teams as t ON tm.team_id = t.id WHERE tm.user_id = :id AND tm.role_in_team = "captain"');
+  $stmt->execute(['id' => $idUser]);
+
+  return $stmt->fetchAll();
+}
+
+// Fonction pour récupérer les équipes inscrites à un tournoi
+function getTeamInTournament($idTeam, $idTournament){
+  require 'db.php';
+  $stmt = $pdo->prepare('SELECT id from registrations WHERE team_id = :team_id AND tournament_id = :tournament_id');
+  $stmt->execute([
+    "team_id" => $idTeam,
+    "tournament_id" => $idTournament
+  ]);
+
+  return $stmt->fetchAll();
+}
+
+// Fonction pour inscrire une équipe
+function registerTeamInTournament($idTeam, $idTournament){
+  require 'db.php';
+  $stmt = $pdo->prepare('INSERT INTO registrations (team_id, tournament_id) VALUES (:team_id, :tournament_id)');
+  $stmt->execute([
+    "team_id" => $idTeam,
+    "tournament_id" => $idTournament
+  ]);
+
+  return $stmt->rowCount();
+}
