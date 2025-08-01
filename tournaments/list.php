@@ -29,13 +29,16 @@ if(!empty($_SESSION['connected']) && $_SESSION['connected'] === true){
             <th>Description</th>
             <th>Date de début</th>
             <th>Date de fin</th>
+            <?php if(!empty($userConnected) && $userConnected['role'] === 'admin'): ?>
+              <th>Nombre d'équipe inscrites</th>
+            <?php endif; ?>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           <?php
           include_once '../config/fonctions.php';
-          $tournaments = getAllActiveTournaments();
+          $tournaments = !empty($userConnected) && $userConnected['role'] === 'admin' ? getAllTournaments() : getAllActiveTournaments();
           foreach ($tournaments as $tournament):
           ?>
             <tr>
@@ -44,6 +47,9 @@ if(!empty($_SESSION['connected']) && $_SESSION['connected'] === true){
               <td><?= $tournament['description'] ?></td>
               <td><?= date('d/m/Y', strtotime($tournament['start_date'])) ?></td>
               <td><?= date('d/m/Y', strtotime($tournament['end_date'])) ?></td>
+              <?php if(!empty($userConnected) && $userConnected['role'] === 'admin'): ?>
+                <td><?= $tournament['inscrits'] ?></td>
+              <?php endif; ?>
               <td>
                 <a href="../tournament/list.php?id=<?= $tournament['id'] ?>">Voir le tournoi</a>
                 <?php if(!empty($_SESSION['connected']) && $_SESSION['connected'] === true): ?>

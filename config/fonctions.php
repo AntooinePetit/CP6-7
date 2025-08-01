@@ -327,3 +327,12 @@ function deleteTeam($id){
 
   return $stmt->rowCount();
 }
+
+// Fonction pour récupérer tous les tournois et compter les équipes inscrites
+function getAllTournaments(){
+  require 'db.php';
+  $stmt = $pdo->prepare('SELECT t.id as id, t.name as name, t.game as game, t.description as description, t.start_date as start_date, t.end_date as end_date, t.organizer_id as organizer_id, COUNT(*) as inscrits FROM registrations as r INNER JOIN tournaments as t ON r.tournament_id = t.id GROUP BY t.name ORDER BY COUNT(*) DESC;');
+  $stmt->execute();
+
+  return $stmt->fetchAll();
+}
