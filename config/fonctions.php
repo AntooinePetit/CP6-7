@@ -336,3 +336,24 @@ function getAllTournaments(){
 
   return $stmt->fetchAll();
 }
+
+// Fonction pour récupérer tous les membres non administrateurs
+function getAllNonAdminMembers(){
+  require 'db.php';
+  $stmt = $pdo->prepare('SELECT id, username, email, role FROM users WHERE role != "admin"');
+  $stmt->execute();
+
+  return $stmt->fetchAll();
+}
+
+// Fonction pour mettre à jour un rôle utilisateur
+function updateUserRole($id, $role) {
+  require 'db.php';
+  $stmt = $pdo->prepare('UPDATE users SET role = :role WHERE id = :id');
+  $stmt->execute([
+    'role' => $role,
+    'id' => $id
+  ]);
+
+  return $stmt->rowCount();
+}

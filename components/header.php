@@ -6,6 +6,10 @@
       <li><a href="/cp6-7/index.php">Accueil</a></li>
       <li><a href="/cp6-7/teams/list.php">Equipes</a></li>
       <li><a href="/cp6-7/tournaments/list.php">Tournois</a></li>
+      <!-- Si l'utilisateur connecté est un administrateur -->
+      <?php if(!empty($userConnected) && $userConnected['role'] === 'admin'): ?>
+        <li><a href="../users/list.php">Membres</a></li>
+      <?php endif; ?>
       <!-- Si l'utilisateur n'est pas connecté -->
       <?php if (empty($_SESSION['connected'])): ?>
         <li><a href="/cp6-7/users/login.php">Se connecter</a></li>
