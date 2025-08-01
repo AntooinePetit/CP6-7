@@ -25,8 +25,9 @@ if (!empty($_GET['id'])) {
   <?php include_once '../components/header.php'; ?>
 
   <main>
+    <h1><?= isset($teamInfo['name']) ? $teamInfo['name'] : 'Équipe introuvable' ?></h1>
+    <?php if(!empty($teamInfo)) : ?>
     <div class="info">
-      <h1><?= $teamInfo['name'] ?></h1>
       <p>Date de création : <?= date('d/m/Y', strtotime($teamInfo['created_at'])) ?></p>
       <?php foreach ($teamPlayers as $player):
         if ($player['role_in_team'] === 'captain'): ?>
@@ -41,7 +42,7 @@ if (!empty($_GET['id'])) {
           <tr>
             <th>Pseudo du joueur</th>
             <th>Rôle</th>
-            <?php if(isset($userInTeam) && $userInTeam != false && $userInTeam['role_in_team'] === 'captain'): ?>
+            <?php if(!empty($userInTeam) && $userInTeam != false && $userInTeam['role_in_team'] === 'captain'): ?>
               <th>Actions</th>
             <?php endif; ?>
           </tr>
@@ -51,17 +52,22 @@ if (!empty($_GET['id'])) {
             <tr>
               <td><?= $player['username'] ?></td>
               <td><?= $player['role_in_team'] ?></td>
-              <?php if(isset($userInTeam) && $userInTeam['role_in_team'] === 'captain' && $player['role_in_team'] != 'captain'): ?>
+              <?php if(!empty($userInTeam) && $userInTeam['role_in_team'] === 'captain' && $player['role_in_team'] != 'captain'): ?>
                 <td><a href="delete.php?id_player=<?= $player['id'] ?>&id_team=<?= $idTeam ?>">Exclure</a></td>
               <?php endif; ?>
             </tr>
           <?php endforeach; ?>
         </tbody>
       </table>
-      <?php if(isset($userInTeam) && $userInTeam === false): ?>
+      <?php if(!empty($userInTeam) && $userInTeam === false): ?>
         <a href="join.php?id=<?= $idTeam ?>" class="ajout">Rejoindre cette équipe</a>
       <?php endif; ?>
     </div>
+    <?php else : ?>
+      <div class="info">
+        <a href="list.php">Retourner à la liste des équipes</a>
+      </div>
+    <?php endif; ?>
   </main>
 
   <?php include_once '../components/footer.php'; ?>

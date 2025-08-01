@@ -309,3 +309,12 @@ function registerTeamInTournament($idTeam, $idTournament){
 
   return $stmt->rowCount();
 }
+
+// Fonction pour récupérer toutes les équipes inscrites à un tournoi
+function getTournamentTeams($id){
+  require 'db.php';
+  $stmt = $pdo->prepare('SELECT t.name as team_name, u.username as team_captain from registrations as r INNER JOIN teams as t ON r.team_id = t.id INNER JOIN team_members as tm ON t.id = tm.team_id INNER JOIN users as u ON tm.user_id = u.id WHERE r.tournament_id = :id AND tm.role_in_team = "captain"');
+  $stmt->execute(['id' => $id]);
+
+  return $stmt->fetchAll();
+}
