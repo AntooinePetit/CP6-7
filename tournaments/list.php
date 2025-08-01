@@ -49,7 +49,7 @@ if(!empty($_SESSION['connected']) && $_SESSION['connected'] === true){
                 <?php if(!empty($_SESSION['connected']) && $_SESSION['connected'] === true): ?>
                   |
                   <!-- Condition d'affichage et lien si l'utilisateur est le créateur du tournoi ou non -->
-                  <a href="<?= $_SESSION['id_user'] === $tournament['organizer_id'] ? 'update.php?id='.$tournament['id'] : '../tournament/register.php?id='.$tournament['id'] ?> ?>"><?= $_SESSION['id_user'] === $tournament['organizer_id'] ? 'Modifier' : 'S\'inscrire' ?></a>
+                  <a href="<?= $_SESSION['id_user'] === $tournament['organizer_id'] ? 'update.php?id='.$tournament['id'] : '../tournament/register.php?id='.$tournament['id'] ?>"><?= $_SESSION['id_user'] === $tournament['organizer_id'] ? 'Modifier' : 'S\'inscrire' ?></a>
                 <?php endif; ?>
               </td>
             </tr>

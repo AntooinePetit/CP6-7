@@ -251,3 +251,19 @@ function getTournamentById($id){
 
   return $stmt->fetch();
 }
+
+// Fonction pour mettre à jour un tournoi
+function updateTournament($id, $name, $game, $description, $start, $end){
+  include 'db.php';
+  $stmt = $pdo->prepare('UPDATE tournaments SET name = :name, game = :game, description = :description, start_date = :start, end_date = :end WHERE id = :id');
+  $stmt->execute([
+    "name" => $name,
+    "game" => $game,
+    "description" => $description,
+    "start" => $start,
+    "end" => $end,
+    "id" => $id
+  ]);
+
+  return $stmt->rowCount();
+}
