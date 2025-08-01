@@ -1,6 +1,9 @@
 <?php
 session_start();
-
+if(!empty($_SESSION['connected']) && $_SESSION['connected'] === true && !empty($_SESSION['id_user'])){
+  include_once '../config/fonctions.php';
+  $userInfo = getUser($_SESSION['id_user']);
+}
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -23,6 +26,9 @@ session_start();
           <tr>
             <th>Nom de l'équipe</th>
             <th>Action</th>
+            <?php if(!empty($userInfo) && $userInfo['role'] === 'admin'): ?>
+              <th>Bannir</th>
+            <?php endif; ?>
           </tr>
         </thead>
         <tbody>
@@ -40,6 +46,9 @@ session_start();
                   <a href="join.php?id=<?= $team['id'] ?>">Rejoindre l'équipe</a>
                 <?php endif; ?>
               </td>
+              <?php if(!empty($userInfo) && $userInfo['role'] === 'admin'): ?>
+                <td><a href="delete-team.php?id=<?= $team['id'] ?>">Bannir l'équipe</a></td>
+              <?php endif; ?>
             </tr>
           <?php endforeach; ?>
         </tbody>

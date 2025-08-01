@@ -318,3 +318,12 @@ function getTournamentTeams($id){
 
   return $stmt->fetchAll();
 }
+
+// Fonction pour supprimer une équipe
+function deleteTeam($id){
+  require 'db.php';
+  $stmt = $pdo->prepare('DELETE FROM teams WHERE id = :id');
+  $stmt->execute(['id' => $id]);
+
+  return $stmt->rowCount();
+}

@@ -53,7 +53,7 @@ if (!empty($_GET['id'])) {
               <td><?= $player['username'] ?></td>
               <td><?= $player['role_in_team'] ?></td>
               <?php if(!empty($userInTeam) && $userInTeam['role_in_team'] === 'captain' && $player['role_in_team'] != 'captain'): ?>
-                <td><a href="delete.php?id_player=<?= $player['id'] ?>&id_team=<?= $idTeam ?>">Exclure</a></td>
+                <td><a href="delete-player.php?id_player=<?= $player['id'] ?>&id_team=<?= $idTeam ?>">Exclure</a></td>
               <?php endif; ?>
             </tr>
           <?php endforeach; ?>
