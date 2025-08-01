@@ -3,7 +3,7 @@
 // Création de compte 
 function createAccount($usernameUser, $email, $password)
 {
-  include 'db.php';
+  require 'db.php';
   $passwordHash = password_hash($password, PASSWORD_DEFAULT);
   $stmt = $pdo->prepare('INSERT INTO users (username, email, password_hash) VALUES (:username, :email, :password);');
   $stmt->execute([
@@ -18,7 +18,7 @@ function createAccount($usernameUser, $email, $password)
 // Vérification de l'existence du mail
 function verifyExistingEmail($email, $id = 0)
 {
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('SELECT id FROM users WHERE email = :email AND id != :id');
   $stmt->execute([
     "email" => $email,
@@ -31,7 +31,7 @@ function verifyExistingEmail($email, $id = 0)
 // Vérification de l'existence du nom d'utilisateur
 function verifyExistingUsername($usernameUser, $id = 0)
 {
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('SELECT id FROM users WHERE username = :username AND id != :id');
   $stmt->execute([
     "username" => $usernameUser,
@@ -44,7 +44,7 @@ function verifyExistingUsername($usernameUser, $id = 0)
 // Fonction de connexion
 function connectUser($email, $password)
 {
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('SELECT id, password_hash FROM users WHERE email = :email');
   $stmt->execute(["email" => $email]);
   $user = $stmt->fetch();
@@ -59,7 +59,7 @@ function connectUser($email, $password)
 // Fonction pour récupérer les informations d'un utilisateur
 function getUser($id)
 {
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('SELECT username, email, role FROM users WHERE id = :id');
   $stmt->execute(["id" => $id]);
   return $stmt->fetch();
@@ -68,7 +68,7 @@ function getUser($id)
 // Fonction pour mettre à jour le pseudo utilisateur
 function updateUsername($id, $newUsername)
 {
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('UPDATE users SET username = :username WHERE id = :id');
   $stmt->execute([
     "username" => $newUsername,
@@ -81,7 +81,7 @@ function updateUsername($id, $newUsername)
 // Fonction pour mettre à jour l'email utilisateur
 function updateEmail($id, $newEmail)
 {
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('UPDATE users SET email = :email WHERE id = :id');
   $stmt->execute([
     "email" => $newEmail,
@@ -95,7 +95,7 @@ function updateEmail($id, $newEmail)
 function updatePassword($id, $newPassword)
 {
   $passwordHash = password_hash($newPassword, PASSWORD_DEFAULT);
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('UPDATE users SET password_hash = :pass WHERE id = :id');
   $stmt->execute([
     "pass" =>  $passwordHash,
@@ -108,7 +108,7 @@ function updatePassword($id, $newPassword)
 // Fonction pour récupérer toutes les équipes créées
 function getAllTeams()
 {
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('SELECT id, name FROM teams');
   $stmt->execute();
   return $stmt->fetchAll();
@@ -116,7 +116,7 @@ function getAllTeams()
 
 // Fonction pour vérifier l'existence d'une équipe grâce au nom
 function verifyExistingTeam($teamName){
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('SELECT * FROM teams WHERE name = :name');
   $stmt->execute(["name" => $teamName]);
 
@@ -125,7 +125,7 @@ function verifyExistingTeam($teamName){
 
 // Fonction pour vérifier l'existence d'une équipe grâce à l'id
 function verifyExistingTeamById($idTeam){
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('SELECT * FROM teams WHERE id = :id');
   $stmt->execute(["id" => $idTeam]);
 
@@ -134,7 +134,7 @@ function verifyExistingTeamById($idTeam){
 
 // Fonction pour créer une équipe et y ajouter le créateur en tant que capitaine
 function createTeam($teamName, $idUser){
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('INSERT INTO teams (name) VALUES (:name)');
   $stmt->execute(["name" => $teamName]);
 
@@ -153,7 +153,7 @@ function createTeam($teamName, $idUser){
 
 // Fonction pour ajouter un joueur à une équipe
 function addPlayerToTeam($idTeam, $idUser, $role = 'member'){
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('INSERT INTO team_members (user_id, team_id, role_in_team) VALUES (:user, :team, :role)');
   $stmt->execute([
     "user" => $idUser,
@@ -166,7 +166,7 @@ function addPlayerToTeam($idTeam, $idUser, $role = 'member'){
 
 // Fonction pour récupérer les informations d'une équipe
 function getTeamInfo($idTeam){
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('SELECT name, created_at FROM teams WHERE id = :id');
   $stmt->execute(["id" => $idTeam]);
 
@@ -175,7 +175,7 @@ function getTeamInfo($idTeam){
 
 // Fonction pour récupérer tous les joueurs d'une équipe
 function getAllPlayersFromTeam($idTeam){
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('SELECT u.id, u.username, tm.role_in_team FROM team_members as tm INNER JOIN users as u ON tm.user_id = u.id WHERE tm.team_id = :id ORDER BY tm.role_in_team DESC');
   $stmt->execute(["id" => $idTeam]);
 
@@ -184,7 +184,7 @@ function getAllPlayersFromTeam($idTeam){
 
 // Fonction pour vérifier la présence d'un joueur dans une équipe
 function verifyPlayerInTeam($idTeam, $idUser){
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('SELECT role_in_team FROM team_members WHERE user_id = :user_id AND team_id = :team_id');
   $stmt->execute([
     "user_id" => $idUser,
@@ -196,7 +196,7 @@ function verifyPlayerInTeam($idTeam, $idUser){
 
 // Fonction pour exclure un joueur d'une équipe
 function kickPlayer($idTeam, $idPlayer){
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('DELETE FROM team_members WHERE user_id = :user_id AND team_id = :team_id');
   $stmt->execute([
     "user_id" => $idPlayer,
@@ -208,7 +208,7 @@ function kickPlayer($idTeam, $idPlayer){
 
 // Fonction pour récupérer tous les tournois actifs
 function getAllActiveTournaments(){
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('SELECT * FROM tournaments WHERE start_date >= CURRENT_TIMESTAMP;');
   $stmt->execute();
 
@@ -217,7 +217,7 @@ function getAllActiveTournaments(){
 
 // Fonction pour vérifier l'existence d'un tournoi actif grâce au nom
 function verifyExistingTournamentByName($name, $id = 0){
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('SELECT * FROM tournaments WHERE name = :name AND start_date >= CURRENT_TIMESTAMP AND id != :id');
   $stmt->execute([
     "name" => $name,
@@ -229,7 +229,7 @@ function verifyExistingTournamentByName($name, $id = 0){
 
 // Fonction de création de tournoi
 function createTournament($name, $game, $description, $start, $end, $userId){
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('INSERT INTO tournaments(name, game, description, start_date, end_date, organizer_id) VALUES (:tournament_name , :game , :tournament_description , :starting , :ending , :id)');
   $stmt->execute([
     "tournament_name" => $name,
@@ -245,7 +245,7 @@ function createTournament($name, $game, $description, $start, $end, $userId){
 
 // Fonction pour récupérer les données d'un tournoi spécifique
 function getTournamentById($id){
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('SELECT name, game, description, start_date, end_date, organizer_id FROM tournaments WHERE id = :id');
   $stmt->execute(["id" => $id]);
 
@@ -254,7 +254,7 @@ function getTournamentById($id){
 
 // Fonction pour mettre à jour un tournoi
 function updateTournament($id, $name, $game, $description, $start, $end){
-  include 'db.php';
+  require 'db.php';
   $stmt = $pdo->prepare('UPDATE tournaments SET name = :name, game = :game, description = :description, start_date = :start, end_date = :end WHERE id = :id');
   $stmt->execute([
     "name" => $name,
@@ -264,6 +264,15 @@ function updateTournament($id, $name, $game, $description, $start, $end){
     "end" => $end,
     "id" => $id
   ]);
+
+  return $stmt->rowCount();
+}
+
+// Fonction pour supprimer un tournoi
+function deleteTournament($id){
+  require 'db.php';
+  $stmt = $pdo->prepare('DELETE FROM tournaments WHERE id = :id');
+  $stmt->execute(["id" => $id]);
 
   return $stmt->rowCount();
 }

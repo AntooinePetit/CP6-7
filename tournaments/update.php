@@ -102,6 +102,9 @@ if (!empty($_POST['submit'])) {
           <input type="submit" name="submit" value="Modifier votre tournoi">
           <?= $error ?>
         </form>
+        <div class="info">
+          <a href="delete.php?id=<?= $_GET['id'] ?>">Supprimer le tournoi</a>
+        </div>
       <!-- Si l'utilisateur n'a pas les droits nécessaire -->
       <?php else: ?>
         <div class="info">
