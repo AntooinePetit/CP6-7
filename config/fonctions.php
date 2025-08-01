@@ -357,3 +357,12 @@ function updateUserRole($id, $role) {
 
   return $stmt->rowCount();
 }
+
+// Récupérer tous les tournois d'une équipe spécifique
+function getTournamentFromTeam($id){
+  require 'db.php';
+  $stmt = $pdo->prepare('SELECT t.name, t.game, t.description, t.start_date, t.end_date FROM registrations as r INNER JOIN tournaments as t ON r.tournament_id = t.id WHERE r.team_id = :id ');
+  $stmt->execute(['id' => $id]);
+
+  return $stmt->fetchAll();
+}
